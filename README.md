@@ -1,16 +1,23 @@
-# spring-boot-rest
+## Getting Started
+This project is sample implementation of Spring REST and uses Spring DATA(Jpa). It uses Swagger to expose the rest service.
 
-# Endpoints
+## Features
+* Swagger
+* Mapstruct
+* Jpa
 
-# Mapstruct configuration
+## Mapstruct configuration
+To generate the mapper implementation do the following.
+>gradle clean and gradle build
 
-Make the generated mapper implementation using apt as source, so IDE can detect it.
+You can check the generated code in:
 ```
-sourceSets {
-	main {
-		java {
-			srcDirs("src/main/java", "build/generated/source/apt/main")
-		}
-	}
-}
+- build
+ - generated
+  - source
+   - apt
+    - main
+     - com.jparest.mapper
 ```
+
+## Endpoints
