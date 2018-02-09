@@ -22,7 +22,9 @@ You can check the generated code in:
     - main
      - com.jparest.mapper
 ```
-Note: Everytime changes is made in mapper run the gradle clean and gradle build to reflect the changes. 
+Note 1: Everytime changes is made in mapper run the **gradle build** to reflect the changes. 
+<br/>
+Note 2: Added in build.gradle **apply plugin: 'idea'** so IDE will detect the mapper implementation.
 
 ## Swagger
 * To view the swagger-ui it can be accessed in http://localhost:8080/swagger-ui.html.
