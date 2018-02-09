@@ -4,6 +4,7 @@ import com.jparest.exception.*;
 import com.jparest.exception.message.ApiExceptionMessage;
 import com.jparest.exception.message.ErrorMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,9 +24,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ApiExceptionMessage customerNotFoundException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> customerNotFoundException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -35,9 +40,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(CredentialsNotFoundException.class)
-    public ApiExceptionMessage credentialsNotFoundException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> credentialsNotFoundException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -47,9 +56,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(PatchOperationNotSupported.class)
-    public ApiExceptionMessage patchOperationNotSupported(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> patchOperationNotSupported(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -59,9 +72,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(UsernameExistException.class)
-    public ApiExceptionMessage usernameExistException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> usernameExistException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.CONFLICT);
     }
 
     /**
@@ -71,9 +88,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(AddressNotFoundException.class)
-    public ApiExceptionMessage addressNotFoundException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> addressNotFoundException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -83,9 +104,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(ItemNotFoundException.class)
-    public ApiExceptionMessage itemNotFoundException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> itemNotFoundException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -95,9 +120,13 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(PatchFieldNotMatchException.class)
-    public ApiExceptionMessage patchFieldNotMatchException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> patchFieldNotMatchException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -107,8 +136,12 @@ public class ApiExceptionHandler {
      * @return
      */
     @ExceptionHandler(OrderNotFoundException.class)
-    public ApiExceptionMessage orderNotFoundException(ApiException e) {
-        return new ApiExceptionMessage(new Date(), HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND,
-                new ErrorMessage(e.getMessage()));
+    public ResponseEntity<ApiExceptionMessage> orderNotFoundException(ApiException e) {
+        return new ResponseEntity<>(new ApiExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_FOUND);
     }
 }
