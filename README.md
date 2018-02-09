@@ -11,6 +11,7 @@ To generate the mapper implementation do the following.
 >gradle clean and gradle build
 
 You can check the generated code in:
+* For Intellij
 ```
 - build
  - generated
