@@ -7,7 +7,7 @@ import com.jparest.model.Items;
 import com.jparest.model.Orders;
 import com.jparest.model.dto.OrderDto;
 import com.jparest.model.enums.OrderStatusEnum;
-import com.jparest.model.wrapper.OrderRequestWrapper;
+import com.jparest.model.request.OrderRequest;
 import com.jparest.service.impl.ItemServiceImpl;
 import com.jparest.service.impl.OrderServiceImpl;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class OrderControllerTest {
 
     @Test
     public void testShouldAddOrder() throws Exception {
-        OrderRequestWrapper requestWrapper = new OrderRequestWrapper();
+        OrderRequest requestWrapper = new OrderRequest();
         requestWrapper.setItemIds(new ArrayList<>());
         requestWrapper.setOrder(new OrderDto());
         when(this.itemService.getItemById(anyLong())).thenReturn(new Items());

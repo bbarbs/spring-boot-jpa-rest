@@ -31,7 +31,7 @@ public class AddressMapperTest {
         address.setType(AddressEnum.PRIMARY);
         address.setAddress("Test");
         // Map
-        AddressDto dto = this.mapper.mapEntityToDTO(address);
+        AddressDto dto = this.mapper.mapToAddressDto(address);
         assertNotNull(dto);
         assertThat(dto.getAddress()).isEqualTo(address.getAddress());
         assertThat(dto.getAddressType()).isEqualTo(address.getType());
@@ -43,7 +43,7 @@ public class AddressMapperTest {
         dto.setAddressId(1L);
         dto.setAddressType(AddressEnum.PRIMARY);
         dto.setAddress("Test");
-        Address address = this.mapper.mapDTOtoEntity(dto);
+        Address address = this.mapper.mapToAddress(dto);
         assertNotNull(address);
         assertThat(address.getAddress()).isEqualTo(dto.getAddress());
         assertThat(address.getType()).isEqualTo(dto.getAddressType());
@@ -55,7 +55,7 @@ public class AddressMapperTest {
         address.setId(1L);
         address.setType(AddressEnum.PRIMARY);
         address.setAddress("Test");
-        List<AddressDto> dtos = this.mapper.mapEntitiesToDTOs(Arrays.asList(address));
+        List<AddressDto> dtos = this.mapper.mapToAddressDtoList(Arrays.asList(address));
         assertNotNull(dtos);
         dtos.stream().forEach(dto -> {
             assertThat(dto.getAddress()).isEqualTo(address.getAddress());
@@ -69,7 +69,7 @@ public class AddressMapperTest {
         dto.setAddressId(1L);
         dto.setAddressType(AddressEnum.PRIMARY);
         dto.setAddress("Test");
-        List<Address> addresses = this.mapper.mapDTOsToEntities(Arrays.asList(dto));
+        List<Address> addresses = this.mapper.mapToAddressList(Arrays.asList(dto));
         assertNotNull(addresses);
         addresses.stream().forEach(address -> {
             assertThat(dto.getAddress()).isEqualTo(address.getAddress());

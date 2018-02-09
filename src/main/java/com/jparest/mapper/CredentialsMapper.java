@@ -2,10 +2,7 @@ package com.jparest.mapper;
 
 import com.jparest.model.Credentials;
 import com.jparest.model.dto.CredentialsDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,14 +15,16 @@ public interface CredentialsMapper {
     @Mappings({
             @Mapping(target = "id", source = "credentialId")
     })
-    Credentials mapDTOtoEntity(CredentialsDto source);
+    Credentials mapToCredentials(CredentialsDto source);
+
+    @IterableMapping(elementTargetType = Credentials.class)
+    List<Credentials> mapToCredentialsList(List<CredentialsDto> sources);
 
     @Mappings({
             @Mapping(target = "credentialId", source = "id")
     })
-    CredentialsDto mapEntityToDTO(Credentials source);
+    CredentialsDto mapToCredentialsDto(Credentials source);
 
-    List<Credentials> mapDTOsToEntities(List<CredentialsDto> sources);
-
-    List<CredentialsDto> mapEntitiesToDTOs(List<Credentials> sources);
+    @IterableMapping(elementTargetType = CredentialsDto.class)
+    List<CredentialsDto> mapToCredentialsDtoList(List<Credentials> sources);
 }

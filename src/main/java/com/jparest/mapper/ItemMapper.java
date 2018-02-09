@@ -2,10 +2,7 @@ package com.jparest.mapper;
 
 import com.jparest.model.Items;
 import com.jparest.model.dto.ItemDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -21,7 +18,10 @@ public interface ItemMapper {
             @Mapping(target = "name", source = "itemName"),
             @Mapping(target = "description", source = "itemDescription")
     })
-    Items mapDTOtoEntity(ItemDto source);
+    Items mapToItems(ItemDto source);
+
+    @IterableMapping(elementTargetType = Items.class)
+    List<Items> mapToItemsList(List<ItemDto> source);
 
     @Mappings({
             @Mapping(target = "itemId", source = "id"),
@@ -29,9 +29,8 @@ public interface ItemMapper {
             @Mapping(target = "itemName", source = "name"),
             @Mapping(target = "itemDescription", source = "description")
     })
-    ItemDto mapEntityToDTO(Items source);
+    ItemDto mapToItemDto(Items source);
 
-    List<Items> mapDTOsToEntities(List<ItemDto> source);
-
-    List<ItemDto> mapEntitiesToDTOs(List<Items> source);
+    @IterableMapping(elementTargetType = ItemDto.class)
+    List<ItemDto> mapToItemDto(List<Items> source);
 }

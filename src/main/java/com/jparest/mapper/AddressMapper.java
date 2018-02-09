@@ -2,10 +2,7 @@ package com.jparest.mapper;
 
 import com.jparest.model.Address;
 import com.jparest.model.dto.AddressDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -20,16 +17,18 @@ public interface AddressMapper {
             @Mapping(target = "type", source = "addressType"),
             @Mapping(target = "address", source = "address")
     })
-    Address mapDTOtoEntity(AddressDto source);
+    Address mapToAddress(AddressDto source);
+
+    @IterableMapping(elementTargetType = Address.class)
+    List<Address> mapToAddressList(List<AddressDto> sources);
 
     @Mappings({
             @Mapping(target = "addressId", source = "id"),
             @Mapping(target = "addressType", source = "type"),
             @Mapping(target = "address", source = "address")
     })
-    AddressDto mapEntityToDTO(Address source);
+    AddressDto mapToAddressDto(Address source);
 
-    List<Address> mapDTOsToEntities(List<AddressDto> sources);
-
-    List<AddressDto> mapEntitiesToDTOs(List<Address> sources);
+    @IterableMapping(elementTargetType = AddressDto.class)
+    List<AddressDto> mapToAddressDtoList(List<Address> sources);
 }

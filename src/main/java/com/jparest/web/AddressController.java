@@ -28,13 +28,13 @@ public class AddressController {
     AddressMapper mapper;
 
     /**
-     * Get customer addresses.
+     * Get addresses by customer Id.
      *
      * @param customerId
      * @return
      */
     @ApiOperation(
-            value = "Get customer addresses"
+            value = "Get addresses by customer Id"
     )
     @GetMapping(
             value = "/customers/{customerId}/addresses",
@@ -42,7 +42,7 @@ public class AddressController {
     )
     public List<AddressDto> getCustomerAddresses(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         List<Address> addresses = this.addressService.getCustomerAddresses(customerId);
-        return this.mapper.mapEntitiesToDTOs(addresses);
+        return this.mapper.mapToAddressDtoList(addresses);
     }
 
     /**
@@ -63,10 +63,10 @@ public class AddressController {
     public ApiResponse<AddressDto> addCustomerAddress(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Address details", required = true) @RequestBody AddressDto dto) {
-        Address address = this.addressService.addCustomerAddress(customerId, this.mapper.mapDTOtoEntity(dto));
+        Address address = this.addressService.addCustomerAddress(customerId, this.mapper.mapToAddress(dto));
         return new ApiResponse<>(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.mapper.mapEntityToDTO(address))
+                Arrays.asList(this.mapper.mapToAddressDto(address))
         );
     }
 
@@ -88,10 +88,10 @@ public class AddressController {
     public ApiResponse<AddressDto> updateCustomerAddress(
             @ApiParam(value = "Address Id", required = true) @PathVariable(name = "addressId") Long addressId,
             @ApiParam(value = "Address details", required = true) @RequestBody AddressDto dto) {
-        Address address = this.addressService.updateCustomerAddress(addressId, this.mapper.mapDTOtoEntity(dto));
+        Address address = this.addressService.updateCustomerAddress(addressId, this.mapper.mapToAddress(dto));
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(address)));
+                Arrays.asList(this.mapper.mapToAddressDto(address)));
     }
 
     /**
@@ -115,7 +115,7 @@ public class AddressController {
         Address address = this.addressService.patchCustomerAddress(addressId, patch);
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(address))
+                Arrays.asList(this.mapper.mapToAddressDto(address))
         );
     }
 }

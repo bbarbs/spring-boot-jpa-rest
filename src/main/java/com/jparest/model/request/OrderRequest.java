@@ -1,11 +1,11 @@
-package com.jparest.model.wrapper;
+package com.jparest.model.request;
 
 import com.jparest.model.dto.OrderDto;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-public class OrderRequestWrapper {
+public class OrderRequest {
 
     private OrderDto order;
 

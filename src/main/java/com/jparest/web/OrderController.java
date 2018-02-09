@@ -7,10 +7,9 @@ import com.jparest.model.Items;
 import com.jparest.model.Orders;
 import com.jparest.model.dto.ItemDto;
 import com.jparest.model.dto.OrderDto;
+import com.jparest.model.dto.OrderItemDto;
 import com.jparest.model.enums.OrderStatusEnum;
-import com.jparest.model.wrapper.CustomerOrderWrapper;
-import com.jparest.model.wrapper.OrderRequestWrapper;
-import com.jparest.model.wrapper.OrderResponseWrapper;
+import com.jparest.model.request.OrderRequest;
 import com.jparest.rest.ApiResponse;
 import com.jparest.rest.patch.Patch;
 import com.jparest.service.ItemService;
@@ -67,17 +66,16 @@ public class OrderController {
             value = "/orders",
             produces = APPLICATION_JSON_VALUE
     )
-    public List<CustomerOrderWrapper> getAllOrders() {
+    public List<OrderItemDto> getAllOrders() {
         List<Orders> orders = this.orderService.getAllOrders();
-        // Wrap customer orders.
-        return wrapCustomerOrder(orders);
+        return this.orderMapper.mapToOrderItemDtoList(orders);
     }
 
     /**
      * Add customer order.
      *
      * @param customerId
-     * @param requestContext
+     * @param orderRequest
      * @return
      */
     @ApiOperation(
@@ -88,25 +86,22 @@ public class OrderController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    public ApiResponse<OrderResponseWrapper> addOrder(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
-                                                      @ApiParam(value = "Order details", required = true) @RequestBody OrderRequestWrapper requestContext) {
+    public ApiResponse<OrderItemDto> addOrder(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
+                                              @ApiParam(value = "Order details", required = true) @RequestBody OrderRequest orderRequest) {
         // Get items.
         List<Items> items = new ArrayList<>();
-        for (Long itemId : requestContext.getItemIds()) {
+        for (Long itemId : orderRequest.getItemIds()) {
             items.add(this.itemService.getItemById(itemId));
         }
         // Add items in order.
-        Orders orders = this.orderMapper.mapDTOtoEntity(requestContext.getOrder());
+        Orders orders = this.orderMapper.mapToOrderEntity(orderRequest.getOrder());
         orders.setItems(items);
         // Call order service to add order.
         Orders result = this.orderService.addOrder(customerId, orders);
         // Set order response.
-        OrderResponseWrapper responseContext = new OrderResponseWrapper();
-        responseContext.setOrder(this.orderMapper.mapEntityToDTO(result));
-        responseContext.setItems(this.itemMapper.mapEntitiesToDTOs(items));
         return new ApiResponse<>(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(responseContext));
+                Arrays.asList(this.orderMapper.mapToOrderItemDto(result)));
     }
 
     /**
@@ -122,17 +117,9 @@ public class OrderController {
             value = "/customers/{customerId}/orders",
             produces = APPLICATION_JSON_VALUE
     )
-    public List<OrderResponseWrapper> getOrdersByCustomerId(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
+    public List<OrderItemDto> getOrdersByCustomerId(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         List<Orders> orders = this.orderService.getOrdersByCustomerId(customerId);
-        // Wrap order.
-        List<OrderResponseWrapper> responseContexts = new ArrayList<>();
-        for (Orders order : orders) {
-            OrderResponseWrapper responseContext = new OrderResponseWrapper();
-            responseContext.setOrder(this.orderMapper.mapEntityToDTO(order));
-            responseContext.setItems(this.itemMapper.mapEntitiesToDTOs(order.getItems()));
-            responseContexts.add(responseContext);
-        }
-        return responseContexts;
+        return this.orderMapper.mapToOrderItemDtoList(orders);
     }
 
     /**
@@ -148,13 +135,9 @@ public class OrderController {
             value = "/orders/{orderId}",
             produces = APPLICATION_JSON_VALUE
     )
-    public OrderResponseWrapper getOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId) {
+    public OrderItemDto getOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId) {
         Orders orders = this.orderService.getOrderById(orderId);
-        // Wrap order.
-        OrderResponseWrapper responseContext = new OrderResponseWrapper();
-        responseContext.setOrder(this.orderMapper.mapEntityToDTO(orders));
-        responseContext.setItems(this.itemMapper.mapEntitiesToDTOs(orders.getItems()));
-        return responseContext;
+        return this.orderMapper.mapToOrderItemDto(orders);
     }
 
     /**
@@ -172,7 +155,7 @@ public class OrderController {
     )
     public List<ItemDto> getItemsByOrderId(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId) {
         List<Items> items = this.itemService.getItemsByOrderId(orderId);
-        return this.itemMapper.mapEntitiesToDTOs(items);
+        return this.itemMapper.mapToItemDto(items);
     }
 
     /**
@@ -189,31 +172,9 @@ public class OrderController {
             params = "status",
             produces = APPLICATION_JSON_VALUE
     )
-    public List<CustomerOrderWrapper> getOrdersByStatus(@ApiParam(value = "Order status", required = true) @RequestParam(name = "status") OrderStatusEnum status) {
+    public List<OrderItemDto> getOrdersByStatus(@ApiParam(value = "Order status", required = true) @RequestParam(name = "status") OrderStatusEnum status) {
         List<Orders> orders = this.orderService.getOrdersByStatus(status);
-        // Wrap orders.
-        return wrapCustomerOrder(orders);
-    }
-
-    /**
-     * Helper method to wrap customer orders.
-     *
-     * @param orders
-     */
-    private List<CustomerOrderWrapper> wrapCustomerOrder(List<Orders> orders) {
-        List<CustomerOrderWrapper> orderWrappers = new ArrayList<>();
-        for (Orders ordr : orders) {
-            // Map orders.
-            OrderResponseWrapper orderResponse = new OrderResponseWrapper();
-            orderResponse.setOrder(this.orderMapper.mapEntityToDTO(ordr));
-            orderResponse.setItems(this.itemMapper.mapEntitiesToDTOs(ordr.getItems()));
-            // Set context.
-            CustomerOrderWrapper customerOrderWrapper = new CustomerOrderWrapper();
-            customerOrderWrapper.setCustomer(this.customerMapper.mapEntityToDTO(ordr.getCustomer()));
-            customerOrderWrapper.setOrderDetails(orderResponse);
-            orderWrappers.add(customerOrderWrapper);
-        }
-        return orderWrappers;
+        return this.orderMapper.mapToOrderItemDtoList(orders);
     }
 
     /**
@@ -251,10 +212,10 @@ public class OrderController {
     )
     public ApiResponse<OrderDto> updateOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId,
                                                  @ApiParam(value = "Order details", required = true) @RequestBody OrderDto dto) {
-        Orders orders = this.orderService.updateOrderById(orderId, this.orderMapper.mapDTOtoEntity(dto));
+        Orders orders = this.orderService.updateOrderById(orderId, this.orderMapper.mapToOrderEntity(dto));
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.orderMapper.mapEntityToDTO(orders)));
+                Arrays.asList(this.orderMapper.mapToOrderDto(orders)));
     }
 
     /**
@@ -277,6 +238,6 @@ public class OrderController {
         Orders orders = this.orderService.patchOrderById(orderId, patch);
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.orderMapper.mapEntityToDTO(orders)));
+                Arrays.asList(this.orderMapper.mapToOrderDto(orders)));
     }
 }

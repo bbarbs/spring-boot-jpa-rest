@@ -2,10 +2,7 @@ package com.jparest.mapper;
 
 import com.jparest.model.Customer;
 import com.jparest.model.dto.CustomerDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -18,14 +15,16 @@ public interface CustomerMapper {
     @Mappings({
             @Mapping(target = "id", source = "customerId")
     })
-    Customer mapDTOtoEntity(CustomerDto source);
+    Customer mapToCustomer(CustomerDto source);
+
+    @IterableMapping(elementTargetType = Customer.class)
+    List<Customer> mapToCustomerList(List<CustomerDto> sources);
 
     @Mappings({
             @Mapping(target = "customerId", source = "id")
     })
-    CustomerDto mapEntityToDTO(Customer source);
+    CustomerDto mapToCustomerDto(Customer source);
 
-    List<Customer> mapDTOsToEntities(List<CustomerDto> sources);
-
-    List<CustomerDto> mapEntitiesToDTOs(List<Customer> sources);
+    @IterableMapping(elementTargetType = CustomerDto.class)
+    List<CustomerDto> mapToCustomerDtoList(List<Customer> sources);
 }

@@ -42,7 +42,7 @@ public class CredentialsController {
     )
     public List<CredentialsDto> getCustomerCredentials(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         List<Credentials> credentials = this.credentialService.getCustomerCredentials(customerId);
-        return this.mapper.mapEntitiesToDTOs(credentials);
+        return this.mapper.mapToCredentialsDtoList(credentials);
     }
 
     /**
@@ -63,10 +63,10 @@ public class CredentialsController {
     public ApiResponse<CredentialsDto> addCustomerCredentials(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Credentials", required = true) @RequestBody CredentialsDto dto) {
-        Credentials credentials = this.credentialService.addCustomerCredentials(customerId, this.mapper.mapDTOtoEntity(dto));
+        Credentials credentials = this.credentialService.addCustomerCredentials(customerId, this.mapper.mapToCredentials(dto));
         return new ApiResponse<>(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.mapper.mapEntityToDTO(credentials))
+                Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
     }
 
@@ -88,10 +88,10 @@ public class CredentialsController {
     public ApiResponse<CredentialsDto> updateCustomerCredentials(
             @ApiParam(value = "Credential Id", required = true) @PathVariable(name = "credentialId") Long credentialId,
             @ApiParam(value = "Credentials", required = true) @RequestBody CredentialsDto dto) {
-        Credentials credentials = this.credentialService.updateCustomerCredentials(credentialId, this.mapper.mapDTOtoEntity(dto));
+        Credentials credentials = this.credentialService.updateCustomerCredentials(credentialId, this.mapper.mapToCredentials(dto));
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(credentials))
+                Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
     }
 
@@ -116,7 +116,7 @@ public class CredentialsController {
         Credentials credentials = this.credentialService.patchCustomerCredentials(credentialId, patch);
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(credentials))
+                Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
     }
 }

@@ -5,7 +5,6 @@ import com.jparest.mapper.CredentialsMapper;
 import com.jparest.mapper.CustomerMapper;
 import com.jparest.model.Customer;
 import com.jparest.model.dto.CustomerDto;
-import com.jparest.model.wrapper.CustomerWrapper;
 import com.jparest.rest.ApiResponse;
 import com.jparest.rest.patch.Patch;
 import com.jparest.service.CustomerService;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,18 +49,9 @@ public class CustomerController {
             value = "/customers",
             produces = APPLICATION_JSON_VALUE
     )
-    public List<CustomerWrapper> getAllCustomers() {
-        List<CustomerWrapper> customerWrappers = new ArrayList<>();
-        // Wrap customer details.
+    public List<CustomerDto> getAllCustomers() {
         List<Customer> customers = this.customerService.getAllCustomer();
-        for (Customer customer : customers) {
-            CustomerWrapper context = new CustomerWrapper();
-            context.setCustomerDetails(this.customerMapper.mapEntityToDTO(customer));
-            context.setAddresses(this.addressMapper.mapEntitiesToDTOs(customer.getAddresses()));
-            context.setCredentials(this.credentialsMapper.mapEntityToDTO(customer.getCredentials()));
-            customerWrappers.add(context);
-        }
-        return customerWrappers;
+        return this.customerMapper.mapToCustomerDtoList(customers);
     }
 
     /**
@@ -80,7 +69,7 @@ public class CustomerController {
     )
     public CustomerDto getCustomerById(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         Customer customer = this.customerService.getCustomerById(customerId);
-        return this.customerMapper.mapEntityToDTO(customer);
+        return this.customerMapper.mapToCustomerDto(customer);
     }
 
     /**
@@ -98,10 +87,10 @@ public class CustomerController {
             produces = APPLICATION_JSON_VALUE
     )
     public ApiResponse<CustomerDto> addNewCustomer(@ApiParam(value = "Customer details", required = true) @RequestBody CustomerDto dto) {
-        Customer customer = this.customerService.addCustomer(this.customerMapper.mapDTOtoEntity(dto));
+        Customer customer = this.customerService.addCustomer(this.customerMapper.mapToCustomer(dto));
         return new ApiResponse<>(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.customerMapper.mapEntityToDTO(customer)));
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
     }
 
     /**
@@ -140,10 +129,10 @@ public class CustomerController {
     public ApiResponse<CustomerDto> updateCustomer(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Customer details", required = true) @RequestBody CustomerDto dto) {
-        Customer customer = this.customerService.updateCustomer(customerId, this.customerMapper.mapDTOtoEntity(dto));
+        Customer customer = this.customerService.updateCustomer(customerId, this.customerMapper.mapToCustomer(dto));
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.customerMapper.mapEntityToDTO(customer)));
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
     }
 
     /**
@@ -167,6 +156,6 @@ public class CustomerController {
         Customer customer = this.customerService.patchCustomer(customerId, patch);
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.customerMapper.mapEntityToDTO(customer)));
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
     }
 }

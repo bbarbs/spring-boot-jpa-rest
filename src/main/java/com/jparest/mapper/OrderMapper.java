@@ -2,15 +2,14 @@ package com.jparest.mapper;
 
 import com.jparest.model.Orders;
 import com.jparest.model.dto.OrderDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import com.jparest.model.dto.OrderItemDto;
+import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(
         componentModel = "spring",
+        uses = {ItemMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface OrderMapper {
@@ -22,7 +21,10 @@ public interface OrderMapper {
             @Mapping(target = "remarks", source = "orderRemarks"),
             @Mapping(target = "status", source = "orderStatus"),
     })
-    Orders mapDTOtoEntity(OrderDto source);
+    Orders mapToOrderEntity(OrderDto source);
+
+    @IterableMapping(elementTargetType = Orders.class)
+    List<Orders> mapToOrderEntityList(List<OrderDto> source);
 
     @Mappings({
             @Mapping(target = "orderId", source = "id"),
@@ -31,9 +33,20 @@ public interface OrderMapper {
             @Mapping(target = "orderRemarks", source = "remarks"),
             @Mapping(target = "orderStatus", source = "status"),
     })
-    OrderDto mapEntityToDTO(Orders source);
+    OrderDto mapToOrderDto(Orders source);
 
-    List<Orders> mapDTOsToEntities(List<OrderDto> source);
+    @IterableMapping(elementTargetType = OrderDto.class)
+    List<OrderDto> mapToOrderDtoList(List<Orders> source);
 
-    List<OrderDto> mapEntitiesToDTOs(List<Orders> source);
+    @Mappings({
+            @Mapping(target = "orderId", source = "id"),
+            @Mapping(target = "orderAmount", source = "amount"),
+            @Mapping(target = "orderQuantity", source = "quantity"),
+            @Mapping(target = "orderRemarks", source = "remarks"),
+            @Mapping(target = "orderStatus", source = "status"),
+    })
+    OrderItemDto mapToOrderItemDto(Orders source);
+
+    @IterableMapping(elementTargetType = OrderItemDto.class)
+    List<OrderItemDto> mapToOrderItemDtoList(List<Orders> source);
 }

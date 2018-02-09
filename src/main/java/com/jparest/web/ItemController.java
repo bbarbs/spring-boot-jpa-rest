@@ -43,7 +43,7 @@ public class ItemController {
     )
     public List<ItemDto> getAllItems() {
         List<Items> items = this.itemService.getAllItems();
-        return this.mapper.mapEntitiesToDTOs(items);
+        return this.mapper.mapToItemDto(items);
     }
 
     /**
@@ -61,10 +61,10 @@ public class ItemController {
             produces = APPLICATION_JSON_VALUE
     )
     public ApiResponse<ItemDto> addItem(@ApiParam(value = "Item details", required = true) @RequestBody ItemDto dto) {
-        Items items = this.itemService.addItem(this.mapper.mapDTOtoEntity(dto));
+        Items items = this.itemService.addItem(this.mapper.mapToItems(dto));
         return new ApiResponse<>(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.mapper.mapEntityToDTO(items)));
+                Arrays.asList(this.mapper.mapToItemDto(items)));
     }
 
     /**
@@ -82,7 +82,7 @@ public class ItemController {
     )
     public ItemDto getItemById(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId) {
         Items items = this.itemService.getItemById(itemId);
-        return this.mapper.mapEntityToDTO(items);
+        return this.mapper.mapToItemDto(items);
     }
 
 
@@ -121,10 +121,10 @@ public class ItemController {
     )
     public ApiResponse<ItemDto> updateItemById(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId,
                                                @ApiParam(value = "Item details", required = true) @RequestBody ItemDto dto) {
-        Items items = this.itemService.updateItemById(itemId, this.mapper.mapDTOtoEntity(dto));
+        Items items = this.itemService.updateItemById(itemId, this.mapper.mapToItems(dto));
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(items)));
+                Arrays.asList(this.mapper.mapToItemDto(items)));
     }
 
     /**
@@ -147,6 +147,6 @@ public class ItemController {
         Items items = this.itemService.patchItemById(itemId, patch);
         return new ApiResponse<>(HttpStatus.OK.value(),
                 HttpStatus.OK,
-                Arrays.asList(this.mapper.mapEntityToDTO(items)));
+                Arrays.asList(this.mapper.mapToItemDto(items)));
     }
 }
