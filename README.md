@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bbarbs/spring-boot-jpa-rest.svg?branch=master)](https://travis-ci.org/bbarbs/spring-boot-jpa-rest)
+
 ## Getting Started
 This project is sample implementation of Spring REST and uses Spring DATA(Jpa). It uses Swagger to expose the rest service and Mapstruct to mapping data transfer object to entity and vice versa.
 
