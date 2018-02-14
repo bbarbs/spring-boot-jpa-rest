@@ -10,7 +10,7 @@ This project is sample implementation of Spring REST and uses Spring DATA(Jpa). 
 
 ## Mapstruct configuration
 To generate the mapper implementation do the following.
->gradle clean and gradle build
+> gradle build
 
 You can check the generated code in:
 * For Intellij
