@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jparest.mapper.AddressMapper;
 import com.jparest.model.Address;
 import com.jparest.model.dto.AddressDto;
+import com.jparest.service.impl.AddressServiceImpl;
 import com.jparest.service.impl.CustomerServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +34,14 @@ public class AddressControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    CustomerServiceImpl customerService;
+    AddressServiceImpl addressService;
 
     @Autowired
     AddressMapper addressMapper;
 
     @Test
     public void testShouldAddCustomerAddress() throws Exception {
-        given(this.customerService.addCustomerAddress(anyLong(), any())).willReturn(new Address());
+        given(this.addressService.addCustomerAddress(anyLong(), any())).willReturn(new Address());
         ObjectMapper objectMapper = new ObjectMapper();
         String body = objectMapper.writeValueAsString(new AddressDto());
         this.mockMvc.perform(

@@ -7,6 +7,8 @@ import com.jparest.model.enums.AddressEnum;
 import com.jparest.repository.AddressRepository;
 import com.jparest.repository.CredentialsRepository;
 import com.jparest.repository.CustomerRepository;
+import com.jparest.service.impl.AddressServiceImpl;
+import com.jparest.service.impl.CredentialServiceImpl;
 import com.jparest.service.impl.CustomerServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,12 @@ public class CustomerServiceTest {
 
     @InjectMocks
     CustomerServiceImpl customerService;
+
+    @InjectMocks
+    CredentialServiceImpl credentialService;
+
+    @InjectMocks
+    AddressServiceImpl addressService;
 
     @Mock
     CustomerRepository customerRepository;
@@ -63,7 +71,7 @@ public class CustomerServiceTest {
         credentials.setPassword("pass");
         customer.setCredentials(credentials);
         when(this.credentialsRepository.save(credentials)).thenReturn(credentials);
-        Credentials c = this.customerService.addCustomerCredentials(1L, credentials);
+        Credentials c = this.credentialService.addCustomerCredentials(1L, credentials);
         assertNotNull(c);
         assertThat(c.getCustomer()).isEqualTo(customer);
         assertThat(c.getUsername()).isEqualTo(credentials.getUsername());
@@ -83,7 +91,7 @@ public class CustomerServiceTest {
         address.setAddress("Test");
         customer.setAddress(address);
         when(this.addressRepository.save(address)).thenReturn(address);
-        Address a = this.customerService.addCustomerAddress(1L, address);
+        Address a = this.addressService.addCustomerAddress(1L, address);
         assertNotNull(a);
         assertThat(a.getCustomer()).isEqualTo(customer);
         assertThat(a.getAddress()).isEqualTo(address.getAddress());
