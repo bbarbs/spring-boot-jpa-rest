@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bbarbs/spring-boot-jpa-rest.svg?branch=master)](https://travis-ci.org/bbarbs/spring-boot-jpa-rest)
+
 ## Getting Started
 This project is sample implementation of Spring REST and uses Spring DATA(Jpa). It uses Swagger to expose the rest service and Mapstruct to mapping data transfer object to entity and vice versa.
 
@@ -8,7 +10,7 @@ This project is sample implementation of Spring REST and uses Spring DATA(Jpa). 
 
 ## Mapstruct configuration
 To generate the mapper implementation do the following.
->gradle clean and gradle build
+> gradle build
 
 You can check the generated code in:
 * For Intellij
@@ -20,7 +22,9 @@ You can check the generated code in:
     - main
      - com.jparest.mapper
 ```
-Note: Everytime changes is made in mapper run the gradle clean and gradle build to reflect the changes. 
+Note 1: Everytime changes is made in mapper run the **gradle build** to reflect the changes. 
+<br/>
+Note 2: Added in build.gradle **apply plugin: 'idea'** so IDE will detect the mapper implementation.
 
 ## Swagger
 * To view the swagger-ui it can be accessed in http://localhost:8080/swagger-ui.html.
