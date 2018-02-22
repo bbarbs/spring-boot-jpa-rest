@@ -186,17 +186,18 @@ public class OrderController {
      * @param orderId
      * @return
      */
+    @io.swagger.annotations.ApiResponse(code = 204, message = "No Content")
     @ApiOperation(
             value = "Remove order by Id"
     )
     @DeleteMapping(
             value = "/orders/{orderId}",
-            produces = TEXT_PLAIN_VALUE
+            produces = {APPLICATION_JSON_VALUE, TEXT_PLAIN_VALUE}
     )
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity deleteOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId) {
         this.orderService.removeOrderById(orderId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**

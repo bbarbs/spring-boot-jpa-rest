@@ -95,6 +95,7 @@ public class ItemController {
      * @param itemId
      * @return
      */
+    @io.swagger.annotations.ApiResponse(code = 204, message = "No Content")
     @ApiOperation(
             value = "Delete item by Id"
     )
@@ -102,10 +103,10 @@ public class ItemController {
             value = "/items/{itemId}",
             produces = TEXT_PLAIN_VALUE
     )
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity deleteItemById(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId) {
         this.itemService.removeItemById(itemId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**

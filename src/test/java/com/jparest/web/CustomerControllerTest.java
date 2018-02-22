@@ -67,7 +67,7 @@ public class CustomerControllerTest {
                 delete("/v1/api/customers/1")
                         .contentType(APPLICATION_JSON_VALUE)
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(print());
     }
 

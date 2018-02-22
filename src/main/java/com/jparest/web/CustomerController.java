@@ -102,17 +102,18 @@ public class CustomerController {
      * @param customerId
      * @return
      */
+    @io.swagger.annotations.ApiResponse(code = 204, message = "No Content")
     @ApiOperation(
             value = "Delete customer by Id"
     )
     @DeleteMapping(
             value = "/customers/{customerId}",
-            produces = TEXT_PLAIN_VALUE
+            produces = {APPLICATION_JSON_VALUE, TEXT_PLAIN_VALUE}
     )
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity deleteCustomerById(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         this.customerService.deleteCustomerById(customerId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**
