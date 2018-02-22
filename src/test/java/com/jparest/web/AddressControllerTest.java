@@ -50,7 +50,7 @@ public class AddressControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(body))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 }

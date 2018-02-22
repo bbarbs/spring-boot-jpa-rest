@@ -60,11 +60,13 @@ public class CredentialsController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CredentialsDto> addCustomerCredentials(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Credentials", required = true) @RequestBody CredentialsDto dto) {
         Credentials credentials = this.credentialService.addCustomerCredentials(customerId, this.mapper.mapToCredentials(dto));
-        return new ApiResponse<>(HttpStatus.CREATED.value(),
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
                 Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
@@ -85,12 +87,14 @@ public class CredentialsController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CredentialsDto> updateCustomerCredentials(
             @ApiParam(value = "Credential Id", required = true) @PathVariable(name = "credentialId") Long credentialId,
             @ApiParam(value = "Credentials", required = true) @RequestBody CredentialsDto dto) {
         Credentials credentials = this.credentialService.updateCustomerCredentials(credentialId, this.mapper.mapToCredentials(dto));
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
                 Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
     }
@@ -110,12 +114,14 @@ public class CredentialsController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CredentialsDto> patchCustomerCredentials(
             @ApiParam(value = "Credential Id", required = true) @PathVariable(name = "credentialId") Long credentialId,
             @ApiParam(value = "Credentials details", required = true) @RequestBody Patch patch) {
         Credentials credentials = this.credentialService.patchCustomerCredentials(credentialId, patch);
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
                 Arrays.asList(this.mapper.mapToCredentialsDto(credentials))
         );
     }

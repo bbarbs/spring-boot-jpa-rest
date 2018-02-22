@@ -65,7 +65,7 @@ public class OrderControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(body)
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 

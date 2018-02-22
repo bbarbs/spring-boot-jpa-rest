@@ -86,6 +86,7 @@ public class OrderController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<OrderItemDto> addOrder(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
                                               @ApiParam(value = "Order details", required = true) @RequestBody OrderRequest orderRequest) {
         // Get items.
@@ -99,9 +100,11 @@ public class OrderController {
         // Call order service to add order.
         Orders result = this.orderService.addOrder(customerId, orders);
         // Set order response.
-        return new ApiResponse<>(HttpStatus.CREATED.value(),
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.orderMapper.mapToOrderItemDto(result)));
+                Arrays.asList(this.orderMapper.mapToOrderItemDto(result))
+        );
     }
 
     /**
@@ -190,9 +193,10 @@ public class OrderController {
             value = "/orders/{orderId}",
             produces = TEXT_PLAIN_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity deleteOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId) {
         this.orderService.removeOrderById(orderId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
@@ -210,12 +214,15 @@ public class OrderController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<OrderDto> updateOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId,
                                                  @ApiParam(value = "Order details", required = true) @RequestBody OrderDto dto) {
         Orders orders = this.orderService.updateOrderById(orderId, this.orderMapper.mapToOrderEntity(dto));
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.orderMapper.mapToOrderDto(orders)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.orderMapper.mapToOrderDto(orders))
+        );
     }
 
     /**
@@ -233,11 +240,14 @@ public class OrderController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<OrderDto> patchOrderById(@ApiParam(value = "Order Id", required = true) @PathVariable(name = "orderId") Long orderId,
                                                 @ApiParam(value = "Patch details", required = true) @RequestBody Patch patch) {
         Orders orders = this.orderService.patchOrderById(orderId, patch);
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.orderMapper.mapToOrderDto(orders)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.orderMapper.mapToOrderDto(orders))
+        );
     }
 }

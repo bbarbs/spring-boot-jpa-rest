@@ -86,11 +86,14 @@ public class CustomerController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CustomerDto> addNewCustomer(@ApiParam(value = "Customer details", required = true) @RequestBody CustomerDto dto) {
         Customer customer = this.customerService.addCustomer(this.customerMapper.mapToCustomer(dto));
-        return new ApiResponse<>(HttpStatus.CREATED.value(),
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer))
+        );
     }
 
     /**
@@ -106,6 +109,7 @@ public class CustomerController {
             value = "/customers/{customerId}",
             produces = TEXT_PLAIN_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity deleteCustomerById(@ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId) {
         this.customerService.deleteCustomerById(customerId);
         return new ResponseEntity(HttpStatus.OK);
@@ -126,13 +130,16 @@ public class CustomerController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CustomerDto> updateCustomer(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Customer details", required = true) @RequestBody CustomerDto dto) {
         Customer customer = this.customerService.updateCustomer(customerId, this.customerMapper.mapToCustomer(dto));
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer))
+        );
     }
 
     /**
@@ -150,12 +157,15 @@ public class CustomerController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<CustomerDto> patchCustomer(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Patch details", required = true) @RequestBody Patch patch) {
         Customer customer = this.customerService.patchCustomer(customerId, patch);
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.customerMapper.mapToCustomerDto(customer)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.customerMapper.mapToCustomerDto(customer))
+        );
     }
 }

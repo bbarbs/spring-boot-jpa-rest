@@ -60,11 +60,13 @@ public class AddressController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<AddressDto> addCustomerAddress(
             @ApiParam(value = "Customer Id", required = true) @PathVariable(name = "customerId") Long customerId,
             @ApiParam(value = "Address details", required = true) @RequestBody AddressDto dto) {
         Address address = this.addressService.addCustomerAddress(customerId, this.mapper.mapToAddress(dto));
-        return new ApiResponse<>(HttpStatus.CREATED.value(),
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
                 Arrays.asList(this.mapper.mapToAddressDto(address))
         );
@@ -85,13 +87,16 @@ public class AddressController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<AddressDto> updateCustomerAddress(
             @ApiParam(value = "Address Id", required = true) @PathVariable(name = "addressId") Long addressId,
             @ApiParam(value = "Address details", required = true) @RequestBody AddressDto dto) {
         Address address = this.addressService.updateCustomerAddress(addressId, this.mapper.mapToAddress(dto));
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.mapper.mapToAddressDto(address)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.mapper.mapToAddressDto(address))
+        );
     }
 
     /**
@@ -109,12 +114,14 @@ public class AddressController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<AddressDto> patchCustomerAddress(
             @ApiParam(value = "Address Id", required = true) @PathVariable(name = "addressId") Long addressId,
             @ApiParam(value = "Address details", required = true) @RequestBody Patch patch) {
         Address address = this.addressService.patchCustomerAddress(addressId, patch);
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
                 Arrays.asList(this.mapper.mapToAddressDto(address))
         );
     }

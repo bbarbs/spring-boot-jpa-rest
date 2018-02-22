@@ -60,11 +60,14 @@ public class ItemController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ItemDto> addItem(@ApiParam(value = "Item details", required = true) @RequestBody ItemDto dto) {
         Items items = this.itemService.addItem(this.mapper.mapToItems(dto));
-        return new ApiResponse<>(HttpStatus.CREATED.value(),
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
                 HttpStatus.CREATED,
-                Arrays.asList(this.mapper.mapToItemDto(items)));
+                Arrays.asList(this.mapper.mapToItemDto(items))
+        );
     }
 
     /**
@@ -99,6 +102,7 @@ public class ItemController {
             value = "/items/{itemId}",
             produces = TEXT_PLAIN_VALUE
     )
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity deleteItemById(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId) {
         this.itemService.removeItemById(itemId);
         return new ResponseEntity(HttpStatus.OK);
@@ -119,12 +123,15 @@ public class ItemController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ItemDto> updateItemById(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId,
                                                @ApiParam(value = "Item details", required = true) @RequestBody ItemDto dto) {
         Items items = this.itemService.updateItemById(itemId, this.mapper.mapToItems(dto));
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.mapper.mapToItemDto(items)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.mapper.mapToItemDto(items))
+        );
     }
 
     /**
@@ -142,11 +149,14 @@ public class ItemController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
+    @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ItemDto> patchItem(@ApiParam(value = "Item Id", required = true) @PathVariable(name = "itemId") Long itemId,
                                           @ApiParam(value = "Item patch details", required = true) @RequestBody Patch patch) {
         Items items = this.itemService.patchItemById(itemId, patch);
-        return new ApiResponse<>(HttpStatus.OK.value(),
-                HttpStatus.OK,
-                Arrays.asList(this.mapper.mapToItemDto(items)));
+        return new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(this.mapper.mapToItemDto(items))
+        );
     }
 }

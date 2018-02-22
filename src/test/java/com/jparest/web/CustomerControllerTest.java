@@ -46,7 +46,7 @@ public class CustomerControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(body)
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 
@@ -82,7 +82,7 @@ public class CustomerControllerTest {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(body)
         )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 }
